@@ -10,27 +10,27 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php
-		// if ( is_singular() ) :
-			// the_title( '<h1 class="entry-title">', '</h1>' );
-		// else :
-			// the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-		// endif;
+  <header class="entry-header">
+    <?php
+    // if ( is_singular() ) :
+      // the_title( '<h1 class="entry-title">', '</h1>' );
+    // else :
+      // the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
+    // endif;
 
-		// if ( 'post' === get_post_type() ) :
-			?>
-			<!-- <div class="entry-meta"> -->
-				<?php
-				// xyz_template_posted_on();
-				// xyz_template_posted_by();
-				?>
-			<!-- </div> -->
-			<!-- .entry-meta -->
-		<?php
-	//  endif; 
-	 ?>
-	</header><!-- .entry-header -->
+    // if ( 'post' === get_post_type() ) :
+      ?>
+      <!-- <div class="entry-meta"> -->
+        <?php
+        // xyz_template_posted_on();
+        // xyz_template_posted_by();
+        ?>
+      <!-- </div> -->
+      <!-- .entry-meta -->
+    <?php
+  //  endif; 
+   ?>
+  </header><!-- .entry-header -->
     
     <section class="blog-posts">
       <div class="container">
@@ -42,9 +42,9 @@
                 $blog_posts = new WP_Query( array( 'post_type' => 'post', 'post_status’' => 'publish', 'posts_per_page' => -1 ) );
                 ?>
                 <?php if ( $blog_posts->have_posts() ) : ?>
-				<?php 
-					// while ( $blog_posts->have_posts() ) : $blog_posts->the_post();
-				 ?>
+        <?php 
+          // while ( $blog_posts->have_posts() ) : $blog_posts->the_post();
+         ?>
               
                 <div class="col-lg-12">
                   <div class="blog-post">
@@ -92,9 +92,9 @@
                     </div>
                   </div>
                 </div>
-				<?php
-			    //   endwhile;
-			 ?>
+        <?php
+          //   endwhile;
+       ?>
                 <?php else: ?>
                     <p class = "no-blog-posts">
                     <?php esc_html_e('Sorry, no posts matched your criteria.', 'theme-domain'); ?> 
@@ -130,13 +130,13 @@
 
 
 
-	<!-- Container -->
-	
-	<!-- .entry-content -->
+  <!-- Container -->
+  
+  <!-- .entry-content -->
 
-	<!-- <footer class="entry-footer">
-		<?php 
-		// xyz_template_entry_footer(); 
-		?>
-	</footer>.entry-footer -->
+  <!-- <footer class="entry-footer">
+    <?php 
+    // xyz_template_entry_footer(); 
+    ?>
+  </footer>.entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

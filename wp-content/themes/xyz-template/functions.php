@@ -53,6 +53,7 @@ if ( ! function_exists( 'xyz_template_setup' ) ) :
 				'menu-1' => esc_html__( 'Primary', 'xyz-template' ),
 			)
 		);
+
 		/*
 		 * Switch default core markup for search form, comment form, and comments
 		 * to output valid HTML5.
@@ -142,15 +143,15 @@ function xyz_template_scripts() {
 	wp_enqueue_style( 'xyz-template-b', get_template_directory_uri() . '/css/flex-slider.css', array(), _S_VERSION );
 	wp_enqueue_style( 'xyz-template-c', get_template_directory_uri() . '/css/fontawesome.css', array(), _S_VERSION );
 	wp_enqueue_style( 'xyz-template-d', get_template_directory_uri() . '/css/templatemo-stand-blog.css', array(), _S_VERSION );
-	
-	//inside css folder
-	
+
+	// inside css folder.
+
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap/css/bootstrap.min.css', array(), _S_VERSION );
 	wp_enqueue_script( 'javascript-one', get_template_directory_uri() . '/css/bootstrap/js/bootstrap.bundle.min.js', array(), _S_VERSION, true );
 	wp_enqueue_script( 'javascript-two', get_template_directory_uri() . '/css/bootstrap/jquery/jquery.min.js', array(), _S_VERSION, true );
-    
-	//inside js folder
-	
+
+	// inside js folder.
+
 	wp_enqueue_script( 'javascript-three', get_template_directory_uri() . '/js/accordions.js', array(), _S_VERSION, true );
 	wp_enqueue_script( 'javascript-four', get_template_directory_uri() . '/js/custom.js', array(), _S_VERSION, true );
 	wp_enqueue_script( 'javascript-five', get_template_directory_uri() . '/js/customizer.js', array(), _S_VERSION, true );
@@ -164,11 +165,11 @@ function xyz_template_scripts() {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
-function add_link_atts($atts) {
-	$atts['class'] = "nav-link";
+function add_link_atts( $atts ) {
+	$atts['class'] = 'nav-link';
 	return $atts;
-  }
-add_filter( 'nav_menu_link_attributes', 'add_link_atts');
+}
+add_filter( 'nav_menu_link_attributes', 'add_link_atts' );
 
 add_action( 'wp_enqueue_scripts', 'xyz_template_scripts' );
 
@@ -200,7 +201,71 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 function register_my_menu() {
-	register_nav_menu('new-menu',__( 'Footer' ));
-	}
+	register_nav_menu( 'new-menu', __( 'Footer' ) );
+}
 	add_action( 'init', 'register_my_menu' );
 
+
+function wpbeginner_numeric_posts_nav() {
+
+	if ( is_singular() )
+		return;
+
+		global $wp_query;
+
+		/** Stop execution if there's only 1 page */
+	if ( $wp_query->max_num_pages <= 1 )
+		return;
+
+		$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+		$max   = intval( $wp_query->max_num_pages );
+
+		/** Add current page to the array */
+	if ( $paged >= 1 )
+		$links[] = $paged;
+
+		/** Add the pages around the current page to the array */
+	if ( $paged >= 3 ) {
+		$links[] = $paged - 1;
+		$links[] = $paged - 2;
+	}
+
+	if ( ( $paged + 2 ) <= $max ) {
+		$links[] = $paged + 2;
+		$links[] = $paged + 1;
+	}
+
+		echo '<div class="navigation"><ul>' . "\n";
+
+	/** Previous Post Link */
+	if ( get_previous_posts_link() )
+		printf( '<li>%s</li>' . "\n", get_previous_posts_link() );
+
+	/** Link to first page, plus ellipses if necessary */
+	if ( ! in_array( 1, $links ) ) {
+		$class = 1 == $paged ? ' class="active"' : '';
+
+		printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), '1' );
+
+		if ( ! in_array( 2, $links ) )
+			echo '<li>…</li>';
+	}
+	/** Link to current page, plus 2 pages in either direction if necessary */
+		sort( $links );
+	foreach ( (array) $links as $link ) {
+		$class = $paged == $link ? ' class="active"' : '';
+		printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
+	}
+		/** Link to last page, plus ellipses if necessary */
+	if ( ! in_array( $max, $links ) ) {
+		if ( ! in_array( $max - 1, $links ) )
+			echo '<li>…</li>' . "\n";
+
+			$class = $paged == $max ? ' class="active"' : '';
+			printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $max );
+	}
+	/** Next Post Link */
+	if ( get_next_posts_link() )
+		printf( '<li>%s</li>' . "\n", get_next_posts_link() );
+		echo '</ul></div>' . "\n";
+}
